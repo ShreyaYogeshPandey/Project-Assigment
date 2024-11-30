@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to left, rgb(186, 30, 225), rgb(16, 225, 173), rgb(236, 235, 130));
+    color: #333;
+}
+
+header {
+    background: linear-gradient(to left, rgb(222, 225, 30), rgb(208, 16, 225), rgb(146, 218, 200));
+    color: hwb(0 11% 72%);
+    padding: 20px;
+    text-align: center;
+}
+
+form {
+    margin: 20px;
+    padding: 10px;
+    background: linear-gradient(to left, rgb(116, 238, 86), rgb(126, 216, 228), rgb(255, 151, 224));
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 50%;
+}
+
+form label, form input, form button {
+    margin: 10px 0;
+}
+
+form input {
+    width: 92%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: linear-gradient(to left, rgb(116, 238, 86), rgb(126, 216, 228));
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+table th {
+    background: #007bff;
+    color: white;
+}
+
+main {
+    display: flex;
+    margin-right: 20px;
+}
+
+#form-section {
+    margin: 5px;
+}

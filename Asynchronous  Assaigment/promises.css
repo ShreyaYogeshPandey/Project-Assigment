@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(to left, rgb(52, 243, 4), rgb(251, 255, 35), rgb(255, 105, 68));
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #output {
+    margin-top: 20px;
+    font-size: 18px;
+    background: linear-gradient(to top, rgb(52, 243, 4), rgb(251, 255, 35), rgb(255, 105, 68));
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 10px;
+  }

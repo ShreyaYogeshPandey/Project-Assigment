@@ -1,0 +1,106 @@
+section
+    {
+        display: flex;
+    }
+
+article 
+    {
+        text-align: justify;
+        margin: 5px;
+        border: 4mm ridge white;
+        padding:20px;
+        width: 360px;
+        height: 1900px;
+        box-shadow: 3px 6px 9px 12px rgb(90, 80, 80);
+    }
+
+footer 
+    {
+        display: flex;
+        justify-content: center;
+        padding: 5px;
+        background-color: #45a1ff;
+        color: #fff; 
+        margin: 20px;
+    }
+    
+.container
+    {
+        height: auto;
+        border: 4mm ridge white;
+        margin: 5px;
+    }
+
+.box
+    {
+        width: auto;
+        height: auto;
+        border: 2px solid lightblue;
+        background-color: lightblue;
+        margin: 20px;
+        padding: 20px;
+        box-shadow: 2px 4px 6px 8px burlywood;
+    }
+
+header
+    {
+        text-align: center;
+    }
+
+div
+    {
+        border: 4mm ridge white;
+        margin: 5px;
+        padding: 20px;
+    }
+
+input
+    {
+        width: 1250px;
+        height: 20px;
+    }
+
+form
+    {
+        background-color: aqua;   
+    }
+
+button
+    {
+        background-color: rgb(97, 97, 158);
+        width: 100px;
+        height: 50px;
+        margin-top: 20px;
+        font-size: x-large;
+    }
+
+nav
+    {
+        background-color: rgb(34, 212, 153);
+        font-size: x-large;
+        padding: 20px;
+        margin-top: -22px;
+        margin-left: -22px;
+        margin-right: -22px;
+    }
+
+span
+    {
+        padding-right: 30px;
+    }
+
+label
+    {
+        font-size: x-large;
+    }
+
+form
+    ul
+        {
+            font-size: x-large;
+        }
+
+#para
+        {
+            color: red;
+        }

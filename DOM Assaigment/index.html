@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System</title>
+    <link rel="stylesheet" href="index.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Student Registration System</h1>
+        <p>A simple system for registering and managing student information.</p>
+    </header>
+    <main>
+        <section id="form-section">
+            <!-- Form for student details -->
+        </section>
+        <section id="display-section">
+            <!-- Display registered students -->
+        </section>
+    
+    
+        <section id="form-section">
+            <h2>Registration Form</h2>
+            <form id="student-form">
+                <label for="student-name">Student Name:</label>
+                <input type="text" id="student-name" placeholder="Enter name" required>
+                
+                <label for="student-id">Student ID:</label>
+                <input type="number" id="student-id" placeholder="Enter ID" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter email" required>
+                
+                <label for="contact-number">Contact No:</label>
+                <input type="tel" id="contact-number" placeholder="Enter contact number" required>
+                
+                <button type="button" id="add-student">Add Student</button>
+            </form>
+        </section>
+
+        <section id="display-section">
+            <h2>Registered Students</h2>
+            <table id="student-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </section>
+        
+
+    </main>
+
+    <script src="index.js"></script>
+    
+
+</body>
+    
+</body>
+</html>
