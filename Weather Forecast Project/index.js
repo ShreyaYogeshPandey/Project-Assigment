@@ -1,109 +1,186 @@
-const apiKey = "YOUR_API_KEY"; // Replace with your API key from OpenWeatherMap
+const city = document.querySelector("#city-name");
+const apikey = '7831e95fb5fb6c6e7cc737153bacd95a';
 
-// DOM Elements
-const cityInput = document.getElementById("cityInput");
-const searchBtn = document.getElementById("searchBtn");
-const locationBtn = document.getElementById("locationBtn");
-const weatherDisplay = document.getElementById("weatherDisplay");
-const forecastDisplay = document.getElementById("forecastDisplay");
-const recentCities = document.getElementById("recentCities");
+const city_head = document.querySelector(".city-head");
+const date_head = document.querySelector(".date");
+const temperature_rating = document.querySelector(".temperature-rating");
+const temperature_message = document.querySelector("#temperature-message");
+const humidity = document.querySelector(".humidity");
+const wind_speed = document.querySelector(".wind-speed");
+const feels_like = document.querySelector("#feels-like");
+const image_source = document.querySelector("#image-source");
 
-// Utility Functions
-const fetchWeather = async (endpoint) => {
-  try {
-    const response = await fetch(endpoint);
-    if (!response.ok) throw new Error("Failed to fetch weather data.");
-    return response.json();
-  } catch (error) {
-    weatherDisplay.innerHTML = `<p class="text-red-500">${error.message}</p>`;
-  }
-};
+const recentCitiesDropdown = document.querySelector("#recent-cities");
 
-const displayWeather = (data) => {
-  const { name, main, weather, wind } = data;
-  weatherDisplay.innerHTML = `
-    <h2 class="text-2xl font-bold">${name}</h2>
-    <p>${weather[0].description}</p>
-    <p>Temperature: ${main.temp} °C</p>
-    <p>Humidity: ${main.humidity}%</p>
-    <p>Wind Speed: ${wind.speed} m/s</p>
-  `;
-};
+const MAX_RECENT_CITIES = 5;
 
-const displayForecast = (data) => {
-  forecastDisplay.innerHTML = "";
-  data.list.slice(0, 5).forEach((item) => {
-    const date = new Date(item.dt * 1000);
-    forecastDisplay.innerHTML += `
-      <div class="p-4 bg-white rounded shadow text-center">
-        <p>${date.toDateString()}</p>
-        <img src="https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png" alt="${item.weather[0].description}" />
-        <p>${item.weather[0].description}</p>
-        <p>Temp: ${item.main.temp} °C</p>
-        <p>Wind: ${item.wind.speed} m/s</p>
-      </div>
-    `;
-  });
-};
+console.log(image_source.src);
+console.log(image_source);
 
-const saveRecentCity = (city) => {
-  let cities = JSON.parse(localStorage.getItem("recentCities")) || [];
-  if (!cities.includes(city)) {
-    cities.push(city);
-    localStorage.setItem("recentCities", JSON.stringify(cities));
-    updateRecentCitiesDropdown();
-  }
-};
-
-const updateRecentCitiesDropdown = () => {
-  const cities = JSON.parse(localStorage.getItem("recentCities")) || [];
-  recentCities.innerHTML = "";
-  if (cities.length) {
-    recentCities.classList.remove("hidden");
-    cities.forEach((city) => {
-      const option = document.createElement("option");
-      option.value = city;
-      option.textContent = city;
-      recentCities.appendChild(option);
-    });
-  } else {
-    recentCities.classList.add("hidden");
-  }
-};
-
-// Event Listeners
-searchBtn.addEventListener("click", async () => {
-  const city = cityInput.value.trim();
-  if (!city) {
-    weatherDisplay.innerHTML = `<p class="text-red-500">Please enter a city name.</p>`;
-    return;
-  }
-  const data = await fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-  if (data) {
-    displayWeather(data);
-    saveRecentCity(city);
-    const forecastData = await fetchWeather(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
-    if (forecastData) displayForecast(forecastData);
-  }
-});
-
-locationBtn.addEventListener("click", () => {
-  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-    const { latitude, longitude } = coords;
-    const data = await fetchWeather(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`);
-    if (data) {
-      displayWeather(data);
-      const forecastData = await fetchWeather(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`);
-      if (forecastData) displayForecast(forecastData);
+const button = document.querySelector("#search-button");
+button.addEventListener("click", async () => {
+    console.log(city.value);
+    if(city.value==''){
+        alert("Enter valid city")
+        return;
     }
-  });
+    const result = await getweather(city.value);
+    if (result && result.list && result.list.length > 0 && result.city && result.city.name.toLowerCase() === city.value.toLowerCase()) {
+        updateWeather(result, city.value);
+        addCityToRecent(city.value);
+    } else {
+        alert("City not found. Please enter a valid city name.");
+    }
+    city.value = '';
 });
 
-recentCities.addEventListener("change", async () => {
-  const city = recentCities.value;
-  const data = await fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-  if (data) displayWeather(data);
+async function getweather(city) {
+    city = city.toLowerCase();
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apikey}&units=metric`;
+    try {
+        let response = await fetch(url);
+        let data = await response.json();
+        if ( !data.list || data.list.length === 0 || !data.city) {
+            return null;
+        }
+        return data;
+    } catch (error) {
+        alert("Error in fetching data");
+        return null;
+    }
+}
+
+function updateWeather(result, cityName) {
+    if (!result) {
+        alert("No result to update");
+        return;
+    }
+console.log(result)
+    city_head.innerText = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
+    let onlyDateValue = result.list[0].dt_txt;
+    onlyDateValue = onlyDateValue.split(' ')[0];
+    date_head.innerText = onlyDateValue;
+    temperature_rating.innerText = Math.floor(result.list[0].main.temp);
+    temperature_message.innerText = result.list[0].weather[0].description;
+    feels_like.innerText = Math.floor(result.list[0].main.feels_like);
+    wind_speed.innerText = result.list[0].wind.speed;
+    humidity.innerText = result.list[0].main.humidity;
+
+    const iconCode = result.list[0].weather[0].icon;
+    let baseURL_icon = `https://openweathermap.org/img/wn/`;
+    let finalURL = `${baseURL_icon}${iconCode}@2x.png`;
+    image_source.src = finalURL;
+
+    // 5 days forecast weather info
+    const foreCastList = document.querySelectorAll(".forecast");
+    let i = 7; // initialize with random number
+    foreCastList.forEach((elem) => {
+        // Changing the date value
+        let onlyDateValue = result.list[i].dt_txt;
+        onlyDateValue = onlyDateValue.split(' ')[0];
+        elem.querySelector(".date-forecast").innerText = onlyDateValue;
+
+        // Changing the image icon dynamically
+        let iconCode = result.list[i].weather[0].icon; // access first element of weather array
+        let baseURL_icon = `https://openweathermap.org/img/wn/`;
+        let finalURL = `${baseURL_icon}${iconCode}@2x.png`;
+        elem.querySelector("#image-forecast").src = finalURL;
+
+        // Temperature-Detail in the forecast:
+        elem.querySelector(".temp-forecast").innerText = Math.floor(result.list[i].main.temp);
+
+        // Changing the windSpeed and humidity value
+        elem.querySelector(".wind-forecast").innerText = result.list[i].wind.speed;
+        elem.querySelector(".humid-forecast").innerText = result.list[i].main.humidity;
+
+        i += 8;
+    });
+}
+
+// Fetch and display weather for Kota on page load
+window.addEventListener("load", async () => {
+    const result = await getweather("kota");
+    if (result && result.list && result.list.length > 0 && result.city && result.city.name.toLowerCase() === "kota") {
+        updateWeather(result, "kota");
+    } else {
+        alert("City not found. Please enter a valid city name.");
+    }
+    updateRecentCitiesDropdown();
 });
 
-// Initialize
-updateRecentCitiesDropdown();
+
+async function getweatherByCoordinates(lat, lon) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=metric`;
+    try {
+        let response = await fetch(url);
+        let data = await response.json();
+        if (!data.list || data.list.length === 0 || !data.city) {
+            return null;
+        }
+        return data;
+    } catch (error) {
+        console.error("Error in fetching data");
+        return null;
+    }
+}
+
+const locationButton = document.querySelector("#location-button");
+locationButton.addEventListener("click", async () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            const result = await getweatherByCoordinates(latitude, longitude);
+            if (result && result.list && result.list.length > 0 && result.city) {
+                updateWeather(result, result.city.name);
+            } else {
+                alert("Unable to fetch weather for your location.");
+            }
+        }, () => {
+            alert("Permission denied");
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+});
+
+
+
+recentCitiesDropdown.addEventListener("change", async () => {
+    const selectedCity = recentCitiesDropdown.value;
+    console.log("selected city",selectedCity)
+    if (selectedCity) {
+        const result = await getweather(selectedCity);
+        if (result && result.list && result.list.length > 0 && result.city) {
+            updateWeather(result, selectedCity);
+        } else {
+            alert("Unable to fetch weather for the selected city.");
+        }
+    }
+});
+
+function addCityToRecent(city) {
+    let recentCities = JSON.parse(localStorage.getItem("recentCities")) || [];
+    recentCities = recentCities.filter(c => c.toLowerCase() !== city.toLowerCase()); // Remove duplicate entries
+    recentCities.unshift(city); 
+    if (recentCities.length > MAX_RECENT_CITIES) {
+        recentCities.pop(); 
+    }
+    localStorage.setItem("recentCities", JSON.stringify(recentCities));
+    updateRecentCitiesDropdown();
+}
+
+function updateRecentCitiesDropdown() {
+    const recentCities = JSON.parse(localStorage.getItem("recentCities")) || [];
+    recentCitiesDropdown.innerHTML = '';
+    if (recentCities.length > 0) {
+        recentCitiesDropdown.style.display = 'block';
+        recentCities.forEach(city => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.innerText = city;
+            recentCitiesDropdown.appendChild(option);
+        });
+    } else {
+        recentCitiesDropdown.style.display = 'none';
+    }
+}
