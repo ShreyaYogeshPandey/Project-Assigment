@@ -1,5 +1,5 @@
 const city = document.querySelector("#city-name");
-const apikey = '7831e95fb5fb6c6e7cc737153bacd95a';
+const apikey = '428e838904afd90816a8e0af75f82beb';
 
 const city_head = document.querySelector(".city-head");
 const date_head = document.querySelector(".date");
@@ -97,13 +97,17 @@ console.log(result)
     });
 }
 
-// Fetch and display weather for Kota on page load
+// Fetch and display weather for Kanpur on page load
 window.addEventListener("load", async () => {
-    const result = await getweather("kota");
-    if (result && result.list && result.list.length > 0 && result.city && result.city.name.toLowerCase() === "kota") {
-        updateWeather(result, "kota");
-    } else {
-        alert("City not found. Please enter a valid city name.");
+    try{
+        const result = await getweather("Kanpur");
+        if (result && result.list && result.list.length > 0 && result.city && result.city.name.toLowerCase() === "Kanpur") {
+            updateWeather(result, "Kanpur");
+        } else {
+            console.warn("City not found during page load: Kanpur");
+        }
+    } catch (error) {
+        console.error("Error fetching weather during page load:", error);
     }
     updateRecentCitiesDropdown();
 });
